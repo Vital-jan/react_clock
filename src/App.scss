@@ -1,0 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  
+  body {
+    height: 100%;
+    min-width: 260px;
+    background: linear-gradient(to bottom, #83b1cf, white) no-repeat;
+  }
+  
+  .circle {
+    margin: 10% auto;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    background-color: #eeeec2;
+    border: 3px solid #121242;
+    position: relative;
+    box-shadow: 0 0 10px 2px black;
+    overflow: hidden;
+    background-color: #041c31;
+    z-index: -5;
+    @media (max-width: 500px) {
+        width: 250px;
+        height: 250px;
+    }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      &.matterhorn {
+        top: 29px;
+        @media (max-width: 500px) {
+            top: 16px;
+        }
+      }
+      .cloud {
+        visibility: hidden;
+      }
+    }
+  }
+
+  .arrow {
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    animation-iteration-count: infinite;
+    opacity: 1;
+  }
+  
+  .arrow-s {
+    height: 275px;
+    width: 6px;
+    background-color: black;
+    border: none;
+    position: absolute;
+    left: 219px;
+    top: 2px;
+    transform-origin: 3px 220px;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    @media (max-width: 500px) {
+      height: 150px;
+      left: 119px;
+      top: 2px;
+      transform-origin: 3px 120px;
+    }
+  }
+  
+  .arrow-m {
+    height: 217.005px;
+    width: 10px;
+    background-color: rgba(165, 42, 42, 0.9);
+    border: none;
+    position: absolute;
+    left: 217px;
+    top: 33.3px;
+    transform-origin: 5px 188.7px;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.9);
+    z-index: 999;
+    @media (max-width: 500px) {
+      height: 119.255px;
+      width: 10px;
+      left: 117px;
+      top: 18.3px;
+      transform-origin: 5px 103.7px;
+    }
+  }
+  
+  .arrow-h {
+    height: 158.73px;
+    width: 10px;
+    background-color: #3f0707;
+    border: none;
+    position: absolute;
+    left: 217px;
+    top: 77.7px;
+    transform-origin: 5px 144.3px;
+    box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.9);
+    z-index: 998;
+    @media (max-width: 500px) {
+      height: 87.23px;
+      width: 10px;
+      left: 117px;
+      top: 42.7px;
+      transform-origin: 5px 79.3px;
+    }
+  }
+  
+  .number {
+    border-radius: 50%;
+    position: absolute;
+    z-index: 997;
+    &.lg {
+      width: 36px;
+      height: 36px;
+      background-color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      left: 204px;
+      font-size: 18px;
+      line-height: 36px;
+      margin-top: 7.2px;
+      transform-origin: 18px 214.8px;
+      @media (max-width: 500px) {
+        left: 112px;
+        transform-origin: 10px 118px;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+        line-height: 20px;
+        margin-top: 4px;
+      }
+      span {
+        font-weight: bold;
+        display: inline-block;
+      }
+    }
+    &.sm {
+      border-radius: 30%;
+      width: 13.5px;
+      height: 13.5px;
+      background-color: rgba(63, 7, 7, 0.8);
+      left: 215.25px;
+      margin-top: 2.7px;
+      transform-origin: 6.75px 219.3px;
+      box-shadow: 0 0 8px 1px black;
+      @media (max-width: 500px) {
+        left: 118.25px;
+        transform-origin: 3.75px 120.5px;
+        width: 7.5px;
+        height: 7.5px;
+        margin-top: 1.5px;
+      }
+    }
+  }
+  
+  
+  .number.deg30 {
+    transform: rotate(30deg);
+  }
+  
+  .number.deg60 {
+    transform: rotate(60deg);
+  }
+  
+  .number.deg90 {
+    transform: rotate(90deg);
+  }
+  
+  .number.deg90 span {
+    transform: rotate(-90deg);
+    display: inline-block;
+  }
+  
+  .number.deg120 {
+    transform: rotate(120deg);
+  }
+  
+  .number.deg150 {
+    transform: rotate(150deg);
+  }
+  
+  .number.deg180 {
+    transform: rotate(180deg);
+  }
+  
+  .number.deg180 span {
+    transform: rotate(-180deg);
+    display: inline-block;
+  }
+  
+  .number.deg210 {
+    transform: rotate(210deg);
+  }
+  
+  .number.deg240 {
+    transform: rotate(240deg);
+  }
+  
+  .number.deg270 {
+    transform: rotate(270deg);
+  }
+  
+  .number.deg270 span {
+    transform: rotate(-270deg);
+    display: inline-block;
+  }
+  
+  .number.deg300 {
+    transform: rotate(300deg);
+  }
+  
+  .number.deg330 {
+    transform: rotate(330deg);
+  }

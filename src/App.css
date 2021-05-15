@@ -1,38 +1,276 @@
-.App {
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+body {
+  height: 100%;
+  min-width: 260px;
+  background: -webkit-gradient(linear, left top, left bottom, from(#83b1cf), to(white)) no-repeat;
+  background: linear-gradient(to bottom, #83b1cf, white) no-repeat;
+}
+
+.circle {
+  margin: 10% auto;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background-color: #eeeec2;
+  border: 3px solid #121242;
+  position: relative;
+  -webkit-box-shadow: 0 0 10px 2px black;
+          box-shadow: 0 0 10px 2px black;
+  overflow: hidden;
+  background-color: #041c31;
+  z-index: -5;
+}
+
+@media (max-width: 500px) {
+  .circle {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+.circle img {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.circle img.matterhorn {
+  top: 29px;
+}
+
+@media (max-width: 500px) {
+  .circle img.matterhorn {
+    top: 16px;
+  }
+}
+
+.circle img .cloud {
+  visibility: hidden;
+}
+
+.arrow {
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  opacity: 1;
+}
+
+.arrow-s {
+  height: 275px;
+  width: 6px;
+  background-color: black;
+  border: none;
+  position: absolute;
+  left: 219px;
+  top: 2px;
+  -webkit-transform-origin: 3px 220px;
+          transform-origin: 3px 220px;
+  -webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.9);
+          box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+}
+
+@media (max-width: 500px) {
+  .arrow-s {
+    height: 150px;
+    left: 119px;
+    top: 2px;
+    -webkit-transform-origin: 3px 120px;
+            transform-origin: 3px 120px;
+  }
+}
+
+.arrow-m {
+  height: 217.005px;
+  width: 10px;
+  background-color: rgba(165, 42, 42, 0.9);
+  border: none;
+  position: absolute;
+  left: 217px;
+  top: 33.3px;
+  -webkit-transform-origin: 5px 188.7px;
+          transform-origin: 5px 188.7px;
+  -webkit-box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.9);
+          box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.9);
+  z-index: 999;
+}
+
+@media (max-width: 500px) {
+  .arrow-m {
+    height: 119.255px;
+    width: 10px;
+    left: 117px;
+    top: 18.3px;
+    -webkit-transform-origin: 5px 103.7px;
+            transform-origin: 5px 103.7px;
+  }
+}
+
+.arrow-h {
+  height: 158.73px;
+  width: 10px;
+  background-color: #3f0707;
+  border: none;
+  position: absolute;
+  left: 217px;
+  top: 77.7px;
+  -webkit-transform-origin: 5px 144.3px;
+          transform-origin: 5px 144.3px;
+  -webkit-box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.9);
+          box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.9);
+  z-index: 998;
+}
+
+@media (max-width: 500px) {
+  .arrow-h {
+    height: 87.23px;
+    width: 10px;
+    left: 117px;
+    top: 42.7px;
+    -webkit-transform-origin: 5px 79.3px;
+            transform-origin: 5px 79.3px;
+  }
+}
+
+.number {
+  border-radius: 50%;
+  position: absolute;
+  z-index: 997;
+}
+
+.number.lg {
+  width: 36px;
+  height: 36px;
+  background-color: rgba(255, 255, 255, 0.7);
   text-align: center;
+  left: 204px;
+  font-size: 18px;
+  line-height: 36px;
+  margin-top: 7.2px;
+  -webkit-transform-origin: 18px 214.8px;
+          transform-origin: 18px 214.8px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media (max-width: 500px) {
+  .number.lg {
+    left: 112px;
+    -webkit-transform-origin: 10px 118px;
+            transform-origin: 10px 118px;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    line-height: 20px;
+    margin-top: 4px;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.number.lg span {
+  font-weight: bold;
+  display: inline-block;
 }
 
-.App-link {
-  color: #61dafb;
+.number.sm {
+  border-radius: 30%;
+  width: 13.5px;
+  height: 13.5px;
+  background-color: rgba(63, 7, 7, 0.8);
+  left: 215.25px;
+  margin-top: 2.7px;
+  -webkit-transform-origin: 6.75px 219.3px;
+          transform-origin: 6.75px 219.3px;
+  -webkit-box-shadow: 0 0 8px 1px black;
+          box-shadow: 0 0 8px 1px black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@media (max-width: 500px) {
+  .number.sm {
+    left: 118.25px;
+    -webkit-transform-origin: 3.75px 120.5px;
+            transform-origin: 3.75px 120.5px;
+    width: 7.5px;
+    height: 7.5px;
+    margin-top: 1.5px;
   }
 }
+
+.number.deg30 {
+  -webkit-transform: rotate(30deg);
+          transform: rotate(30deg);
+}
+
+.number.deg60 {
+  -webkit-transform: rotate(60deg);
+          transform: rotate(60deg);
+}
+
+.number.deg90 {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.number.deg90 span {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+  display: inline-block;
+}
+
+.number.deg120 {
+  -webkit-transform: rotate(120deg);
+          transform: rotate(120deg);
+}
+
+.number.deg150 {
+  -webkit-transform: rotate(150deg);
+          transform: rotate(150deg);
+}
+
+.number.deg180 {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+
+.number.deg180 span {
+  -webkit-transform: rotate(-180deg);
+          transform: rotate(-180deg);
+  display: inline-block;
+}
+
+.number.deg210 {
+  -webkit-transform: rotate(210deg);
+          transform: rotate(210deg);
+}
+
+.number.deg240 {
+  -webkit-transform: rotate(240deg);
+          transform: rotate(240deg);
+}
+
+.number.deg270 {
+  -webkit-transform: rotate(270deg);
+          transform: rotate(270deg);
+}
+
+.number.deg270 span {
+  -webkit-transform: rotate(-270deg);
+          transform: rotate(-270deg);
+  display: inline-block;
+}
+
+.number.deg300 {
+  -webkit-transform: rotate(300deg);
+          transform: rotate(300deg);
+}
+
+.number.deg330 {
+  -webkit-transform: rotate(330deg);
+          transform: rotate(330deg);
+}
+/*# sourceMappingURL=App.css.map */
