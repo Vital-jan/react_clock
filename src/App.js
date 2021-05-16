@@ -29,25 +29,25 @@ function NumberSmall (props) {
 class ArrowSecond extends React.Component {
     constructor (props) {
         super(props);
-        let time = new Date();
         this.state = {
-            angle: time.getSeconds() * 6,
             style: {
-                transform: `rotate(0deg)`
+                transform: `rotate(${this.getAngle()}deg)`
             }
         };
     }
+    getAngle () {
+        let time = new Date();
+        return time.getSeconds() * 6;
+    }
     componentDidMount () {
         let interval = setInterval (()=>{
-            this.setState({angle: this.state.angle + 6});
-            if (this.state.angle > 360) this.setState({angle: 0});
-            this.setState({style: {transform: `rotate(${this.state.angle}deg)`}});
-            console.log(this.state.angle)
+            this.setState({
+                style: {
+                    transform: `rotate(${this.getAngle()}deg)`
+                }
+            });
         }, 1000);
         }
-    setAngle (angle) {
-        this.setState({angle: angle});
-    }
     render () {
         return (
             <div className="arrow arrow-s" style={this.state.style}></div>
@@ -58,28 +58,62 @@ class ArrowSecond extends React.Component {
 class ArrowMinute extends React.Component {
     constructor (props) {
         super(props);
-        let time = new Date();
         this.state = {
-            angle: time.getMinutes() * 6,
             style: {
-                transform: `rotate(${time.getMinutes() * 6}deg)`
+                transform: `rotate(${this.getAngle().angle}deg)`
             }
-        };
+        }
+    }
+    getAngle () {
+        let time = new Date();
+        return {second: time.getSeconds(), angle: time.getMinutes() * 6};
     }
     componentDidMount () {
         let interval = setInterval (()=>{
-            this.setState({angle: this.state.angle + 6});
-            if (this.state.angle > 360) this.setState({angle: 0});
-            this.setState({style: {transform: `rotate(${this.state.angle}deg)`}})
-            console.log(this.state.angle)
-        }, 60000);
+            if (this.getAngle().second === 0) {
+                this.setState({
+                    style: {
+                        transform: `rotate(${this.getAngle().angle}deg)`
+                    }
+                });
+            }
+        }, 1000);
         }
-    setAngle (angle) {
-        this.setState({angle: angle});
-    }
     render () {
         return (
             <div className="arrow arrow-m" style={this.state.style}></div>
+        );
+    }
+}
+class ArrowHour extends React.Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            style: {
+                transform: `rotate(${this.getAngle().angle}deg)`
+            }
+        }
+    }
+    getAngle () {
+        let time = new Date();
+        let hour = time.getHours();
+        hour = hour >= 12 ? hour - 12 : hour;
+        return {minute: time.getMinutes(), angle: hour * 30 + time.getMinutes() / 2};
+    }
+    componentDidMount () {
+        let interval = setInterval (()=>{
+            if (this.getAngle().minute === 0) {
+                this.setState({
+                    style: {
+                        transform: `rotate(${this.getAngle().angle}deg)`
+                    }
+                });
+            }
+        }, 60000);
+        }
+    render () {
+        return (
+            <div className="arrow arrow-h" style={this.state.style}></div>
         );
     }
 }
@@ -100,6 +134,7 @@ console.log(degArr)
             {degArr}
             <ArrowSecond/>
             <ArrowMinute/>
+            <ArrowHour/>
         </div>
     );
 }
