@@ -2,7 +2,7 @@
 import React from 'react';
 import './App.css';
 
-function NumberLarge (props) {
+function NumberLarge (props) { // clock numbers 1,3,6,9
     const deg = {
         transform: `rotate(${props.deg}deg)`
     }
@@ -16,7 +16,7 @@ function NumberLarge (props) {
     );
 }
 
-function NumberSmall (props) {
+function NumberSmall (props) { // other clock numbers
     const deg = {
         transform: `rotate(${props.deg}deg)`
     }
@@ -26,28 +26,39 @@ function NumberSmall (props) {
     );
 }
 
-class ArrowSecond extends React.Component {
+class Arrow extends React.Component { // clock arrow abstract class
     constructor (props) {
         super(props);
         this.state = {
-            style: {
-                transform: `rotate(${this.getAngle()}deg)`
-            }
+            style: null
         };
     }
-    getAngle () {
-        let time = new Date();
-        return time.getSeconds() * 6;
-    }
+
+    refresh = 1000; // time to refresh (ms)
+
+    move (time, force = false) {} // move clock arrow
+
     componentDidMount () {
+        let time = new Date();
+        this.move(time, true); // clock arrow start position
         let interval = setInterval (()=>{
-            this.setState({
-                style: {
-                    transform: `rotate(${this.getAngle()}deg)`
-                }
-            });
-        }, 1000);
-        }
+            let time = new Date();
+            this.move(time); // move clock arrow
+        }, this.refresh)
+    }
+}
+
+class ArrowSecond extends Arrow {
+
+    move (time) {
+        let rotate = `rotate(${time.getSeconds() * 6}deg)`; // set arrow angle
+        this.setState({
+            style: {
+                transform: rotate
+            }
+        });
+    }
+
     render () {
         return (
             <div className="arrow arrow-s" style={this.state.style}></div>
@@ -55,62 +66,39 @@ class ArrowSecond extends React.Component {
     }
 }
 
-class ArrowMinute extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            style: {
-                transform: `rotate(${this.getAngle().angle}deg)`
-            }
-        }
+class ArrowMinute extends Arrow {
+
+    move (time, force = false) {
+        let rotate = `rotate(${time.getMinutes() * 6}deg)`;
+        if (time.getSeconds() === 0 || force)
+            this.setState({
+                style: {
+                    transform: rotate
+                }
+            });
     }
-    getAngle () {
-        let time = new Date();
-        return {second: time.getSeconds(), angle: time.getMinutes() * 6};
-    }
-    componentDidMount () {
-        let interval = setInterval (()=>{
-            if (this.getAngle().second === 0) {
-                this.setState({
-                    style: {
-                        transform: `rotate(${this.getAngle().angle}deg)`
-                    }
-                });
-            }
-        }, 1000);
-        }
+
     render () {
         return (
             <div className="arrow arrow-m" style={this.state.style}></div>
         );
     }
 }
-class ArrowHour extends React.Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            style: {
-                transform: `rotate(${this.getAngle().angle}deg)`
-            }
-        }
+
+class ArrowHour extends Arrow {
+
+    refresh = 60000; // time to refresh hour arrow position
+
+    move (time, force) {
+        let rotate = `rotate(${time.getHours() * 30 + time.getMinutes() / 2}deg)`;
+        if (time.getMinutes() === 0 || force)
+            this.setState({
+                style: {
+                    transform: rotate
+                }
+            });
     }
-    getAngle () {
-        let time = new Date();
-        let hour = time.getHours();
-        hour = hour >= 12 ? hour - 12 : hour;
-        return {minute: time.getMinutes(), angle: hour * 30 + time.getMinutes() / 2};
-    }
-    componentDidMount () {
-        let interval = setInterval (()=>{
-            if (this.getAngle().minute === 0) {
-                this.setState({
-                    style: {
-                        transform: `rotate(${this.getAngle().angle}deg)`
-                    }
-                });
-            }
-        }, 60000);
-        }
+
     render () {
         return (
             <div className="arrow arrow-h" style={this.state.style}></div>
@@ -123,7 +111,6 @@ function Circle() {
     let degArr = smallNumberDeg.map((val)=>{
         return (<NumberSmall deg={val} key={val}/>);
     })
-console.log(degArr)
     return (
         <div className="circle">
             <img className="matterhorn" src="/img/matterhorn.png" alt="Matterhorn"></img>
