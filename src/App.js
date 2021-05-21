@@ -41,9 +41,22 @@ function ArrowHour(props) {
         <div className="arrow arrow-h" style={props.style}></div>
     );
 }
+class Cloud extends React.Component {
+    constructor () {
+        super();
+        this.ref = React.createRef();
+    }
+    componentDidMount() {
+        this.width = this.ref.current.naturalWidth;
+    }
+    render() {
+        return (
+            <img className="cloud" ref={this.ref} src={this.props.img} alt=""/>
+        )
+    }
+}
 
 class Circle extends React.Component { // parent component
-    iterval;
     smallNumberDeg = [30, 60, 120, 150, 210, 240, 300, 330];
     degArr = [];
     state = {
@@ -59,17 +72,26 @@ class Circle extends React.Component { // parent component
             style: {
                 transform: ''
             }
-        }
+        },
+        clouds: []
     }
     constructor() {
         super();
+        this.cloudsCount = 28; // clouds image count
+        this.cloudsArr = [];
+        for (let n = 1; n <= this.cloudsCount; n++) { // clouds components array create
+            let fileID = n < 10 ? '0' + n : n;
+            this.cloudsArr.push(<Cloud img={`/img/clouds/c${fileID}.png`}/>);
+        }
+        this.ref = React.createRef();
         for (let val of this.smallNumberDeg)
-            this.degArr.push(<NumberSmall deg={val} key={val} />)
+        this.degArr.push(<NumberSmall deg={val} key={val} />)
     }
     componentDidMount() {
+        this.width = this.ref.current.clientWidth; // component width
         this.interval = setInterval(() => {// set arrows position (1 time per second)
             let time = new Date();
-            this.setState( 
+            this.setState(
                 {
                     secondAngle: {
                         transform: `rotate(${time.getSeconds() * 6}deg)`
@@ -90,6 +112,16 @@ class Circle extends React.Component { // parent component
                 }
             )
         }, 1000);
+        for (let n = 1; n <= this.cloudsCount; n++) {
+            this.state.clouds.push({
+                active: false,
+                style: {
+                    visibility: 'hidden',
+                    zIndex: 0,
+                    left: 0
+                }
+            });
+        }
     }
     componentWillUnmount() {
         clearInterval(this.interval);
@@ -97,7 +129,7 @@ class Circle extends React.Component { // parent component
 
     render() {
         return (
-            <div className="circle">
+            <div className="circle" ref={this.ref}>
                 <img className="matterhorn" src="/img/matterhorn.png" alt="Matterhorn"></img>
                 <NumberLarge number="XII" deg="0" />
                 <NumberLarge number="III" deg="90" />
@@ -107,6 +139,7 @@ class Circle extends React.Component { // parent component
                 <ArrowSecond style={this.state.secondAngle} />
                 <ArrowMinute style={this.state.minuteAngle} />
                 <ArrowHour style={this.state.hourAngle} />
+                {this.cloudsArr}
             </div>
         );
     }
