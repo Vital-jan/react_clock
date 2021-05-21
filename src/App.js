@@ -30,7 +30,7 @@ class Arrow extends React.Component { // clock arrow abstract class
     constructor(props) {
         super(props);
         this.state = {
-            style: null
+            style: null,
         };
     }
 
@@ -68,14 +68,13 @@ class ArrowSecond extends Arrow {
 
 class ArrowMinute extends Arrow {
 
-    move(time, force = false) {
-        let rotate = `rotate(${time.getMinutes() * 6}deg)`;
-        if (time.getSeconds() === 0 || force)
-            this.setState({
-                style: {
-                    transform: rotate
-                }
-            });
+    move(time) {
+        let rotate = `rotate(${time.getMinutes() * 6}deg)`; // set arrow angle
+        this.setState({
+            style: {
+                transform: rotate
+            }
+        });
     }
 
     render() {
@@ -104,33 +103,38 @@ class ArrowHour extends Arrow {
                 }
             });
     }
-    
-    render() {
 
+    render() {
         return (
             <div className="arrow arrow-h" style={this.state.style}></div>
         );
     }
 }
 
-function Circle() {
-    let smallNumberDeg = [30, 60, 120, 150, 210, 240, 300, 330];
-    let degArr = smallNumberDeg.map((val) => {
-        return (<NumberSmall deg={val} key={val} />);
-    })
-    return (
-        <div className="circle">
-            <img className="matterhorn" src="/img/matterhorn.png" alt="Matterhorn"></img>
-            <NumberLarge number="XII" deg="0" />
-            <NumberLarge number="III" deg="90" />
-            <NumberLarge number="VI" deg="180" />
-            <NumberLarge number="IX" deg="270" />
-            {degArr}
-            <ArrowSecond />
-            <ArrowMinute />
-            <ArrowHour />
-        </div>
-    );
+class Circle extends React.Component {
+    smallNumberDeg = [30, 60, 120, 150, 210, 240, 300, 330];
+    degArr = [];
+    constructor() {
+        super();
+        for (let val of this.smallNumberDeg)
+            this.degArr.push(<NumberSmall deg={val} key={val} />)
+    }
+
+    render() {
+        return (
+            <div className="circle">
+                <img className="matterhorn" src="/img/matterhorn.png" alt="Matterhorn"></img>
+                <NumberLarge number="XII" deg="0" />
+                <NumberLarge number="III" deg="90" />
+                <NumberLarge number="VI" deg="180" />
+                <NumberLarge number="IX" deg="270" />
+                {this.degArr}
+                <ArrowSecond />
+                <ArrowMinute />
+                <ArrowHour />
+            </div>
+        );
+    }
 }
 
 function App() {
