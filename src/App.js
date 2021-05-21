@@ -66,48 +66,35 @@ class Circle extends React.Component { // parent component
         for (let val of this.smallNumberDeg)
             this.degArr.push(<NumberSmall deg={val} key={val} />)
     }
-    setMinuteArrow(time) { // set minutes arrow position
-        this.setState(
-            {
-                minuteAngle: {
-                    transform: `rotate(${time.getMinutes() * 6}deg)`
-                }
-            }
-        )
-    }
-    setHourArrow(time) { // set hours arrow position
-        this.setState(
-            {
-                hourAngle: {
-                    transform: `rotate(${time.getHours() * 30 + time.getMinutes() / 2}deg)`
-                }
-            }
-        )
-    }
     componentDidMount() {
-        let time = new Date(); // start setup arrows position
-        this.setMinuteArrow(time);
-        this.setHourArrow(time);
-        this.interval = setInterval(() => {
+        this.interval = setInterval(() => {// set arrows position (1 time per second)
             let time = new Date();
-            this.setState( // set second arrow position (1 time per second)
+            this.setState( 
                 {
                     secondAngle: {
                         transform: `rotate(${time.getSeconds() * 6}deg)`
                     }
                 })
-            if (time.getSeconds() === 0) { // set minute arrow position (1 time per minute)
-                this.setMinuteArrow(time);
-            }
-            if (time.getMinutes() % 5 === 0) { // set hour arrow position (1 time per 5 minutes)
-                this.setHourArrow(time);
-            }
+            this.setState(
+                {
+                    minuteAngle: {
+                        transform: `rotate(${time.getMinutes() * 6}deg)`
+                    }
+                }
+            )
+            this.setState(
+                {
+                    hourAngle: {
+                        transform: `rotate(${time.getHours() * 30 + time.getMinutes() / 2}deg)`
+                    }
+                }
+            )
         }, 1000);
     }
-    componentDidUnmount() {
+    componentWillUnmount() {
         clearInterval(this.interval);
     }
-    
+
     render() {
         return (
             <div className="circle">
