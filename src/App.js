@@ -42,7 +42,7 @@ function ArrowHour(props) {
 }
 
 const cloudsCount = 28;
-const cloudsVisibleCount = 5;
+const cloudsVisibleCount = 6;
 let cloudsArray = [];
 let cloudsState = [];
 for (let n = 1; n <= cloudsCount; n++) cloudsState.push({left: 0});
@@ -94,17 +94,8 @@ class Circle extends React.Component { // parent component
         for (let val of this.smallNumberDeg) // create small numbers components
             this.degArr.push(<NumberSmall deg={val} key={val} />)
         this.state.clouds = cloudsState;
-        // this.cloudsComponents = this.createCloudsComponents();
     }
 
-    // createCloudsComponents() { // clouds components array returns
-    //     let cloudsComponentsArr = [];
-    //     for (let n = 0; n < cloudsCount; n++) {
-    //         let fileID = n < 9 ? '0' + (n + 1) : n + 1;
-    //         cloudsComponentsArr.push(<Cloud img={`/img/clouds/c${fileID}.png`} key={n} style={this.state.clouds[n]} />);
-    //     }
-    //     return cloudsComponentsArr;
-    // }
     componentDidMount() {
         this.width = this.ref.current.clientWidth;
         this.height = this.ref.current.clientHeight;
@@ -176,7 +167,7 @@ class Circle extends React.Component { // parent component
     cloudMove() {
         cloudsArray.forEach((i, n)=>{
             if (!i.active) return;
-            if (cloudsArray[n].x > this.width) this.cloudStop(n); // disactivate cloud
+            if (cloudsArray[n].x > this.width * 1.2) this.cloudStop(n); // disactivate cloud
             cloudsArray[n].x += cloudsArray[n].dx;
             cloudsArray[n].opacity -= cloudsArray[n].deltaOpacity;
             cloudsArray[n].scale += 0.0015;
@@ -188,7 +179,7 @@ class Circle extends React.Component { // parent component
                 width: cloudsArray[n].width + 'px',
                 top: cloudsArray[n].y + 'px',
                 opacity: cloudsArray[n].opacity,
-                transform: `scaleX(${cloudsArray[n].scale})`
+                transform: `scale(${cloudsArray[n].scale})`,
             };
             this.setState({clouds: cloudsState});
         });
@@ -239,7 +230,6 @@ class Circle extends React.Component { // parent component
                 <Cloud img={`./img/clouds/c26.png`} key={26} style={this.state.clouds[25]} />
                 <Cloud img={`./img/clouds/c27.png`} key={27} style={this.state.clouds[26]} />
                 <Cloud img={`./img/clouds/c28.png`} key={28} style={this.state.clouds[27]} />
-                {/* {this.cloudsComponents} */}
             </div>
         );
     }
