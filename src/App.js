@@ -55,13 +55,15 @@ class Cloud extends React.Component {
     componentDidMount() {
         cloudsArray.push({
             active: false,
-            width: this.ref.current.naturalWidth,
+            originalWidth: this.ref.current.naturalWidth,
+            width: 0,
             ref: this.ref.current,
             x: 0,
             dx: 0,
             y: 0,
             opacity: 0,
-            skew: 0,
+            deltaOpacity: 0,
+            scale: 1,
             zIndex: 0
         });
     }
@@ -141,41 +143,52 @@ class Circle extends React.Component { // parent component
         cloudsArray.forEach((i)=>{
             if (i.active) activeCount++;
         });
-        if (activeCount >= cloudsVisibleCount) return;
+        if (activeCount >= cloudsVisibleCount) return; // visible clouds count limit
         if (Math.random() < 0.5) return; // start new cloud or not every second
         let num = Math.round(Math.random () * (cloudsCount - 1));
         num = num < 0 ? 0 : num;
-        num = num > cloudsCount ? cloudsCount : num;
+        num = num > cloudsCount - 1 ? cloudsCount - 1: num;
         while (cloudsArray[num].active) {
             num += 4;
-            if (num > cloudsCount) num = 0;
+            if (num > cloudsCount - 1) num = 0;
         }
         cloudsArray[num].active = true;
-        cloudsArray[num].dx = 1;
-        cloudsArray[num].x = -cloudsArray[num].width;
-        cloudsArray[num].opacity = 1;
+        let size = Math.random() * cloudsArray[num].originalWidth * 0.8;
+        size = size < 150 ? 150 : size;
+        cloudsArray[num].width = size;
+        cloudsArray[num].x = -size;
+        cloudsArray[num].y = Math.random() * (this.height - size / 2) + size/2;
+
         cloudsArray[num].visibility = 'visible';
+        let layer = Math.random() < 0.5 ? -1 : 1;
+        cloudsArray[num].zIndex = layer;
+        cloudsArray[num].opacity = layer < 0 ? 0.4 : 0.6;
+        cloudsArray[num].deltaOpacity = layer < 0 ? 0.0003 : 0.0005;
+        cloudsArray[num].dx = layer > 0 ? 1 : 0.5;
+        cloudsArray[num].scale = 1;
     }
     
-    cloudStop() {
-    }
+    cloudStop(n) { // disactivate cloud
+        cloudsArray[n].active = false;
+        cloudsArray[n].visibility = 'hidden';
+}
     
     cloudMove() {
         cloudsArray.forEach((i, n)=>{
             if (!i.active) return;
-            if (cloudsArray[n].x > this.width / 2) {
-                cloudsArray[n].active = false;
-                cloudsArray[n].visibility = 'hidden';
-                console.log('stop')
-            }
+            if (cloudsArray[n].x > this.width) this.cloudStop(n); // disactivate cloud
             cloudsArray[n].x += cloudsArray[n].dx;
+            cloudsArray[n].opacity -= cloudsArray[n].deltaOpacity;
+            cloudsArray[n].scale += 0.0015;
+      
             cloudsState[n]= {
                 visibility: cloudsArray[n].visibility,
                 zIndex: cloudsArray[n].zIndex,
                 left: cloudsArray[n].x + 'px',
+                width: cloudsArray[n].width + 'px',
                 top: cloudsArray[n].y + 'px',
                 opacity: cloudsArray[n].opacity,
-                skew: cloudsArray[n].skew,
+                transform: `scaleX(${cloudsArray[n].scale})`
             };
             this.setState({clouds: cloudsState});
         });
@@ -189,7 +202,7 @@ class Circle extends React.Component { // parent component
     render() {
         return (
             <div className="circle" ref={this.ref} >
-                <img className="matterhorn" src="/img/matterhorn.png" alt="Matterhorn"></img>
+                <img className="matterhorn" src="./img/matterhorn.png" alt="Matterhorn"></img>
                 <NumberLarge number="XII" deg="0" />
                 <NumberLarge number="III" deg="90" />
                 <NumberLarge number="VI" deg="180" />
@@ -198,34 +211,34 @@ class Circle extends React.Component { // parent component
                 <ArrowSecond style={this.state.secondAngle} />
                 <ArrowMinute style={this.state.minuteAngle} />
                 <ArrowHour style={this.state.hourAngle} />
-                <Cloud img={`/img/clouds/c01.png`} key={1} style={this.state.clouds[0]} />
-                <Cloud img={`/img/clouds/c02.png`} key={2} style={this.state.clouds[1]} />
-                <Cloud img={`/img/clouds/c03.png`} key={3} style={this.state.clouds[2]} />
-                <Cloud img={`/img/clouds/c04.png`} key={4} style={this.state.clouds[3]} />
-                <Cloud img={`/img/clouds/c05.png`} key={5} style={this.state.clouds[4]} />
-                <Cloud img={`/img/clouds/c06.png`} key={6} style={this.state.clouds[5]} />
-                <Cloud img={`/img/clouds/c07.png`} key={7} style={this.state.clouds[6]} />
-                <Cloud img={`/img/clouds/c08.png`} key={8} style={this.state.clouds[7]} />
-                <Cloud img={`/img/clouds/c09.png`} key={9} style={this.state.clouds[8]} />
-                <Cloud img={`/img/clouds/c10.png`} key={10} style={this.state.clouds[9]} />
-                <Cloud img={`/img/clouds/c11.png`} key={11} style={this.state.clouds[10]} />
-                <Cloud img={`/img/clouds/c12.png`} key={12} style={this.state.clouds[11]} />
-                <Cloud img={`/img/clouds/c13.png`} key={13} style={this.state.clouds[12]} />
-                <Cloud img={`/img/clouds/c14.png`} key={14} style={this.state.clouds[13]} />
-                <Cloud img={`/img/clouds/c15.png`} key={15} style={this.state.clouds[14]} />
-                <Cloud img={`/img/clouds/c16.png`} key={16} style={this.state.clouds[15]} />
-                <Cloud img={`/img/clouds/c17.png`} key={17} style={this.state.clouds[16]} />
-                <Cloud img={`/img/clouds/c18.png`} key={18} style={this.state.clouds[17]} />
-                <Cloud img={`/img/clouds/c19.png`} key={19} style={this.state.clouds[18]} />
-                <Cloud img={`/img/clouds/c20.png`} key={20} style={this.state.clouds[19]} />
-                <Cloud img={`/img/clouds/c21.png`} key={21} style={this.state.clouds[20]} />
-                <Cloud img={`/img/clouds/c22.png`} key={22} style={this.state.clouds[21]} />
-                <Cloud img={`/img/clouds/c23.png`} key={23} style={this.state.clouds[22]} />
-                <Cloud img={`/img/clouds/c24.png`} key={24} style={this.state.clouds[23]} />
-                <Cloud img={`/img/clouds/c25.png`} key={25} style={this.state.clouds[24]} />
-                <Cloud img={`/img/clouds/c26.png`} key={26} style={this.state.clouds[25]} />
-                <Cloud img={`/img/clouds/c27.png`} key={27} style={this.state.clouds[26]} />
-                <Cloud img={`/img/clouds/c28.png`} key={28} style={this.state.clouds[27]} />
+                <Cloud img={`./img/clouds/c01.png`} key={1} style={this.state.clouds[0]} />
+                <Cloud img={`./img/clouds/c02.png`} key={2} style={this.state.clouds[1]} />
+                <Cloud img={`./img/clouds/c03.png`} key={3} style={this.state.clouds[2]} />
+                <Cloud img={`./img/clouds/c04.png`} key={4} style={this.state.clouds[3]} />
+                <Cloud img={`./img/clouds/c05.png`} key={5} style={this.state.clouds[4]} />
+                <Cloud img={`./img/clouds/c06.png`} key={6} style={this.state.clouds[5]} />
+                <Cloud img={`./img/clouds/c07.png`} key={7} style={this.state.clouds[6]} />
+                <Cloud img={`./img/clouds/c08.png`} key={8} style={this.state.clouds[7]} />
+                <Cloud img={`./img/clouds/c09.png`} key={9} style={this.state.clouds[8]} />
+                <Cloud img={`./img/clouds/c10.png`} key={10} style={this.state.clouds[9]} />
+                <Cloud img={`./img/clouds/c11.png`} key={11} style={this.state.clouds[10]} />
+                <Cloud img={`./img/clouds/c12.png`} key={12} style={this.state.clouds[11]} />
+                <Cloud img={`./img/clouds/c13.png`} key={13} style={this.state.clouds[12]} />
+                <Cloud img={`./img/clouds/c14.png`} key={14} style={this.state.clouds[13]} />
+                <Cloud img={`./img/clouds/c15.png`} key={15} style={this.state.clouds[14]} />
+                <Cloud img={`./img/clouds/c16.png`} key={16} style={this.state.clouds[15]} />
+                <Cloud img={`./img/clouds/c17.png`} key={17} style={this.state.clouds[16]} />
+                <Cloud img={`./img/clouds/c18.png`} key={18} style={this.state.clouds[17]} />
+                <Cloud img={`./img/clouds/c19.png`} key={19} style={this.state.clouds[18]} />
+                <Cloud img={`./img/clouds/c20.png`} key={20} style={this.state.clouds[19]} />
+                <Cloud img={`./img/clouds/c21.png`} key={21} style={this.state.clouds[20]} />
+                <Cloud img={`./img/clouds/c22.png`} key={22} style={this.state.clouds[21]} />
+                <Cloud img={`./img/clouds/c23.png`} key={23} style={this.state.clouds[22]} />
+                <Cloud img={`./img/clouds/c24.png`} key={24} style={this.state.clouds[23]} />
+                <Cloud img={`./img/clouds/c25.png`} key={25} style={this.state.clouds[24]} />
+                <Cloud img={`./img/clouds/c26.png`} key={26} style={this.state.clouds[25]} />
+                <Cloud img={`./img/clouds/c27.png`} key={27} style={this.state.clouds[26]} />
+                <Cloud img={`./img/clouds/c28.png`} key={28} style={this.state.clouds[27]} />
                 {/* {this.cloudsComponents} */}
             </div>
         );
